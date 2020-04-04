@@ -25,6 +25,7 @@ static int const MAX_NUM_OF_METRICS_AND_ATTRIBUTES = 20;
 static int const MAX_ENDPOINT_ATTRIBUTE_METRIC_KEY_LENGTH = 50;
 static int const MAX_ENDPOINT_ATTRIBUTE_VALUE_LENGTH = 100;
 static int const MAX_ENDPOINT_ATTRIBUTE_VALUES = 50;
+static AWSPinpointEndpointProfileDemographic *customDemographic;
 
 @interface AWSPinpointEndpointProfile()
 @property (nonatomic, readwrite) NSString *endpointId;
@@ -71,7 +72,7 @@ NSString *DEBUG_CHANNEL_TYPE = @"APNS_SANDBOX";
         _channelType  = debug? DEBUG_CHANNEL_TYPE : CHANNEL_TYPE;
         _address = deviceTokenString;
         _location = [AWSPinpointEndpointProfileLocation new];
-        _demographic = [AWSPinpointEndpointProfileDemographic defaultAWSPinpointEndpointProfileDemographic];
+        _demographic = [AWSPinpointEndpointProfile customDemographic] ?: [AWSPinpointEndpointProfileDemographic defaultAWSPinpointEndpointProfileDemographic];
         _effectiveDate = [AWSPinpointDateUtils utcTimeMillisNow];
         [self setEndpointOptOut:applicationLevelOptOut];
         _attributes = [NSMutableDictionary dictionary];
@@ -109,7 +110,7 @@ NSString *DEBUG_CHANNEL_TYPE = @"APNS_SANDBOX";
         
         //this updates demograhpic information.
         _location = [AWSPinpointEndpointProfileLocation new];
-        _demographic = [AWSPinpointEndpointProfileDemographic defaultAWSPinpointEndpointProfileDemographic];
+        _demographic = [AWSPinpointEndpointProfile customDemographic] ?: [AWSPinpointEndpointProfileDemographic defaultAWSPinpointEndpointProfileDemographic];
         _effectiveDate = [AWSPinpointDateUtils utcTimeMillisNow];
     }
 }
@@ -359,6 +360,14 @@ NSString *DEBUG_CHANNEL_TYPE = @"APNS_SANDBOX";
     }
 
     return hexString;
+}
+
++ (void) setCustomDemographic:(AWSPinpointEndpointProfileDemographic *_Nullable) custom {
+    customDemographic = custom;
+}
+
++ (AWSPinpointEndpointProfileDemographic *_Nullable)customDemographic {
+    return customDemographic;
 }
 
 @end

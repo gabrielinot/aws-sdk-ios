@@ -158,6 +158,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSDictionary *) toDictionary;
 
++ (void) setCustomDemographic:(AWSPinpointEndpointProfileDemographic *_Nullable) customDemographic;
+
 @end
 
 /**
